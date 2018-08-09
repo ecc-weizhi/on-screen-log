@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_small">8dp</dimen>
+
+    <dimen name="tag_max_width">96dp</dimen>
+    <dimen name="message_margin_start">104dp</dimen>
+</resources>

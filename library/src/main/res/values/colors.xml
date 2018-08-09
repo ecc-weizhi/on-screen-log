@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_log">#2b2b2b</color>
+    <color name="text_color_verbose">#BBBBBB</color>
+    <color name="text_color_debug">#2196F3</color>
+    <color name="text_color_info">#4CAF50</color>
+    <color name="text_color_warn">#FF9800</color>
+    <color name="text_color_error">#FF6B68</color>
+    <color name="text_color_wtf">#BA68C8</color>
+
+</resources>
