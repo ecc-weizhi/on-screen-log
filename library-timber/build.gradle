@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode VERSION_CODE.toInteger()
+        versionName VERSION
+
+        consumerProguardFiles 'consumer-proguard-rules.pro'
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+}
+
+dependencies {
+    implementation "app.eccweizhi:onscreenlog:$VERSION"
+//    implementation project(':library')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
+}
+repositories {
+    mavenCentral()
+}
