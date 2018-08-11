@@ -27,15 +27,15 @@ android {
 
 dependencies {
 //    implementation "app.eccweizhi:onscreenlog:$VERSION"
+//    implementation "app.eccweizhi:onscreenlog-timber:$VERSION"
     implementation project(':library')
+    implementation project(':library-timber')
+
+    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation "com.android.support:appcompat-v7:$rootProject.supportVersion"
 
     implementation "com.android.support:recyclerview-v7:$rootProject.recyclerViewVersion"
-
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "com.android.support.test:runner:$rootProject.testVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
 }
