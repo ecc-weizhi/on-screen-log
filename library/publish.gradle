@@ -1,0 +1,90 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+
+task javadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadocs.destinationDir
+}
+
+// Create the pom configuration:
+def pomConfig = {
+    licenses {
+        license {
+            name POM_LICENSE_NAME
+            url POM_LICENSE_URL
+            distribution POM_LICENSE_DISTRIBUTION
+        }
+    }
+    developers {
+        developer {
+            id POM_DEVELOPER_ID
+            name POM_DEVELOPER_NAME
+        }
+    }
+    scm {
+        url POM_SCM_URL
+        connection POM_SCM_CONNECTION
+        developerConnection POM_SCM_DEVELOPER_CONNECTION
+    }
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            artifact("$buildDir/outputs/aar/library-release.aar")
+            artifact sourceJar
+            artifact javadocJar
+            groupId GROUP_ID
+            artifactId ARTIFACT_ID
+            version VERSION
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', POM_DESCRIPTION)
+                root.appendNode('name', POM_NAME)
+                root.appendNode('url', POM_URL)
+                root.children().last() + pomConfig
+
+                def dependenciesNode = asNode().appendNode('dependencies')
+                // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
+                    // Ensure dependencies such as fileTree are not included.
+                    if (it.name != 'unspecified') {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
+Properties bintrayCredential = new Properties()
+bintrayCredential.load(project.rootProject.file('bintraycredential.properties').newDataInputStream())
+
+bintray {
+    user = bintrayCredential.getProperty("bintray.user")
+    key = bintrayCredential.getProperty("bintray.apiKey")
+    publications = ['MyPublication']
+
+    pkg {
+        repo = BINTRAY_PKG_REPO
+        name = BINTRAY_PKG_NAME
+        vcsUrl = BINTRAY_PKG_VCS_URL
+
+        version {
+            name = VERSION
+        }
+    }
+}

@@ -8,8 +8,8 @@ android {
         applicationId "app.eccweizhi.onscreenlog.example"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
+        versionCode VERSION_CODE.toInteger()
+        versionName VERSION
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
