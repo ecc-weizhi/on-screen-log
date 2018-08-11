@@ -29,15 +29,12 @@ ext {
     targetSdkVersion = 27
 
     // dependencies version
-    espressoVersion = '3.0.2'
     groupieVersion = '2.1.0'
-    junitVersion = '4.12'
     kotlinVersion = "$kotlin_version"
     recyclerViewVersion = "27.1.1"
     rxandroidVersion = '2.0.1'
     rxjavaVersion = '2.1.7'
     supportVersion = '27.1.1'
-    testVersion = '1.0.2'
     timberVersion = '4.7.1'
 }
 
