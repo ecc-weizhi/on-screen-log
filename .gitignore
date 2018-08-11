@@ -9,3 +9,6 @@
 /captures
 .externalNativeBuild
 /.idea/caches/build_file_checksums.ser
+
+# secrets not to be added to vcs
+/bintraycredential.properties
