@@ -26,6 +26,7 @@ android {
 }
 
 dependencies {
+//    implementation "app.eccweizhi:onscreenlog:$VERSION"
     implementation project(':library')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
