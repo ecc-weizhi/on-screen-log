@@ -24,3 +24,5 @@ dependencies {
 repositories {
     mavenCentral()
 }
+
+apply from: rootProject.file('publish.gradle')

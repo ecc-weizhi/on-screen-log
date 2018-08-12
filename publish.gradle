@@ -43,8 +43,8 @@ publishing {
             artifact("$buildDir/outputs/aar/library-release.aar")
             artifact sourceJar
             artifact javadocJar
-            groupId GROUP_ID
-            artifactId ARTIFACT_ID
+            groupId POM_GROUP_ID
+            artifactId POM_ARTIFACT_ID
             version VERSION
 
             pom.withXml {
