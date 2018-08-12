@@ -12,6 +12,14 @@ android {
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
+
+    libraryVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (outputFile != null && outputFileName.endsWith('.aar')) {
+                outputFileName = "${POM_ARTIFACT_ID}-${variant.name}-${VERSION}.aar"
+            }
+        }
+    }
 }
 
 dependencies {

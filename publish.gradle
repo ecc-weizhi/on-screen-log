@@ -40,7 +40,7 @@ def pomConfig = {
 publishing {
     publications {
         MyPublication(MavenPublication) {
-            artifact("$buildDir/outputs/aar/library-release.aar")
+            artifact("$buildDir/outputs/aar/${POM_ARTIFACT_ID}-release-${VERSION}.aar")
             artifact sourceJar
             artifact javadocJar
             groupId POM_GROUP_ID
@@ -78,9 +78,14 @@ bintray {
     key = bintrayCredential.getProperty("bintray.apiKey")
     publications = ['MyPublication']
 
+    def licenseArray = BINTRAY_PKG_LICENSES.split(';')
     pkg {
         repo = BINTRAY_PKG_REPO
         name = BINTRAY_PKG_NAME
+        desc = BINTRAY_PKG_DESC
+        websiteUrl = BINTRAY_PKG_WEBSITE_URL
+        issueTrackerUrl = BINTRAY_PKG_ISSUE_TRACKER_URL
+        licenses = licenseArray
         vcsUrl = BINTRAY_PKG_VCS_URL
 
         version {

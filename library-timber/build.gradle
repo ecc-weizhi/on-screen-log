@@ -12,11 +12,18 @@ android {
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
+
+    libraryVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (outputFile != null && outputFileName.endsWith('.aar')) {
+                outputFileName = "${POM_ARTIFACT_ID}-${variant.name}-${VERSION}.aar"
+            }
+        }
+    }
 }
 
 dependencies {
     implementation "app.eccweizhi:onscreenlog:$VERSION"
-//    implementation project(':library')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
