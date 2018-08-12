@@ -8,7 +8,8 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 
 
-class OnScreenLog(private val capacity: Int = 100) {
+class OnScreenLog(private val capacity: Int = 100,
+                  private val outputToLogcat: Boolean = true) {
     val subject: BehaviorSubject<List<Message>> = BehaviorSubject.createDefault(listOf())
     val adapter = LogAdapter.newInstance(subject)
 
@@ -244,5 +245,11 @@ class OnScreenLog(private val capacity: Int = 100) {
 
         val clone = list.clone() as List<Message>
         subject.onNext(clone)
+
+        if (outputToLogcat) {
+            Log.println(priority,
+                    tag,
+                    finalMessage)
+        }
     }
 }
