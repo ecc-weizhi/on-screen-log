@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.eccweizhi.onscreenlog.example">
+    package="app.eccweizhi.onscreenlog.example.timber">
 
     <application
         android:name=".MyApplication"

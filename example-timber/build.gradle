@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
-        applicationId "app.eccweizhi.onscreenlog.example"
+        applicationId "app.eccweizhi.onscreenlog.example.timber"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode VERSION_CODE.toInteger()
@@ -24,9 +24,7 @@ android {
 }
 
 dependencies {
-    implementation "app.eccweizhi:onscreenlog:$VERSION"
-
-    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
+    implementation "app.eccweizhi:onscreenlog-timber:$VERSION"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
