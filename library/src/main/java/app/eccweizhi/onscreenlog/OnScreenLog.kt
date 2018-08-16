@@ -1,5 +1,6 @@
 package app.eccweizhi.onscreenlog
 
+import android.content.Context
 import android.util.Log
 import io.reactivex.subjects.BehaviorSubject
 import java.io.PrintWriter
@@ -8,17 +9,23 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 
 
-class OnScreenLog(private val capacity: Int = 100,
-                  private val outputToLogcat: Boolean = true) {
-    val subject: BehaviorSubject<List<Message>> = BehaviorSubject.createDefault(listOf())
-    val adapter = LogAdapter.newInstance(subject)
-
+/**
+ * Entry point to OnScreenLog library.
+ *
+ * @param applicationContext
+ * @param capacity size of messages to keep in memory. Default is 100.
+ * @param outputToLogcat display logging via [OnScreenLog] in logcat if true
+ * @property adapter reference to an instance of `RecyclerView.Adapter` containing logging messages
+ */
+class OnScreenLog private constructor(private val applicationContext: Context,
+                                      private val capacity: Int,
+                                      private val outputToLogcat: Boolean) {
     private val list = LinkedList<Message>()
     private val idCounter = AtomicLong(0)
 
-    init {
-        if (capacity <= 0) throw IllegalArgumentException("Capacity must be more than 0")
-    }
+    private val subject: BehaviorSubject<List<Message>> = BehaviorSubject.createDefault(listOf())
+
+    val adapter: LogAdapter by lazy { LogAdapter(subject) }
 
     fun v(tag: String,
           message: String,
@@ -250,6 +257,43 @@ class OnScreenLog(private val capacity: Int = 100,
             Log.println(priority,
                     tag,
                     finalMessage)
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun builder() = Builder()
+    }
+
+    class Builder internal constructor() {
+        private var context: Context? = null
+        private var capacity: Int = 100
+        private var outputToLogcat: Boolean = true
+
+        fun context(context: Context): Builder {
+            this.context = context.applicationContext
+            return this
+        }
+
+        fun capacity(capacity: Int): Builder {
+            if (capacity <= 0) throw IllegalArgumentException("Capacity must be more than 0")
+            this.capacity = capacity
+            return this
+        }
+
+        fun outputToLogcat(outputToLogcat: Boolean): Builder {
+            this.outputToLogcat = outputToLogcat
+            return this
+        }
+
+        fun build(): OnScreenLog {
+            context?.let {
+                return OnScreenLog(it,
+                        capacity,
+                        outputToLogcat)
+            } ?: run {
+                throw Exception("Must provide builder with context")
+            }
         }
     }
 }

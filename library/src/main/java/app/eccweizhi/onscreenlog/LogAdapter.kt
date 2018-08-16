@@ -14,7 +14,10 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 
 
-class LogAdapter private constructor(private val subject: BehaviorSubject<List<Message>>
+/**
+ * A [RecyclerView.Adapter] that provides logging message to be displayed.
+ */
+class LogAdapter internal constructor(private val subject: BehaviorSubject<List<Message>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var messageList: List<Message> = listOf()
     private var disposable: Disposable? = null
@@ -126,9 +129,5 @@ class LogAdapter private constructor(private val subject: BehaviorSubject<List<M
             val newItem = newList[newItemPosition]
             return oldItem == newItem
         }
-    }
-
-    internal companion object {
-        internal fun newInstance(subject: BehaviorSubject<List<Message>>) = LogAdapter(subject)
     }
 }
