@@ -33,7 +33,8 @@ android {
 }
 
 dependencies {
-    implementation "app.eccweizhi:onscreenlog-timber:$VERSION"
+    implementation project(':library-timber')
+//    implementation "app.eccweizhi:onscreenlog-timber:$VERSION"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
