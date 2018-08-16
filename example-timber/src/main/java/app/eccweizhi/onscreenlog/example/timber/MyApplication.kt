@@ -7,10 +7,14 @@ import timber.log.Timber
 
 
 class MyApplication : Application() {
-    val onScreenLog = OnScreenLog()
+    lateinit var onScreenLog: OnScreenLog
+        private set
 
     override fun onCreate() {
         super.onCreate()
+        onScreenLog = OnScreenLog.builder()
+                .context(this)
+                .build()
         INSTANCE = this
 
         Timber.plant(OnScreenLoggingTree(onScreenLog))
