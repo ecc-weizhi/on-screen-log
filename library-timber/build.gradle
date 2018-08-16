@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    implementation "app.eccweizhi:onscreenlog:$VERSION"
+    api "app.eccweizhi:onscreenlog:$VERSION"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"

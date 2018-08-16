@@ -36,6 +36,8 @@ dependencies {
     implementation project(':library-timber')
 //    implementation "app.eccweizhi:onscreenlog-timber:$VERSION"
 
+    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation "com.android.support:appcompat-v7:$rootProject.supportVersion"
