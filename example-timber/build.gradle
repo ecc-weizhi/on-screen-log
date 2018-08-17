@@ -21,12 +21,14 @@ android {
     }
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled true  // shrink
+            useProguard false   // don't obfuscate
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             signingConfig signingConfigs.config
-            minifyEnabled true
+            minifyEnabled true  // shrink
+            useProguard true   // obfuscate
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
