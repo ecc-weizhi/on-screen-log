@@ -12,6 +12,7 @@ import android.widget.TextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -23,28 +24,16 @@ class LogAdapter internal constructor(private val subject: BehaviorSubject<List<
     private var disposable: Disposable? = null
     private var attachedRecyclerViewCount = 0
 
-    init {
-        subject.subscribe { newList: List<Message> ->
-            val diffUtilCb = MessageDiffUtilCallback(messageList,
-                    newList)
-            val result = DiffUtil.calculateDiff(diffUtilCb,
-                    false)
-            messageList = newList
-            result.dispatchUpdatesTo(this)
-        }
-    }
-
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         attachedRecyclerViewCount++
 
         if (disposable == null) {
-            disposable = subject.observeOn(AndroidSchedulers.mainThread())
+            disposable = subject.sample(SAMPLE_DURATION_MS, TimeUnit.MILLISECONDS, true)
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { newList: List<Message> ->
-                        val diffUtilCb = MessageDiffUtilCallback(messageList,
-                                newList)
-                        val result = DiffUtil.calculateDiff(diffUtilCb,
-                                false)
+                        val diffUtilCb = MessageDiffUtilCallback(messageList, newList)
+                        val result = DiffUtil.calculateDiff(diffUtilCb, false)
                         messageList = newList
                         result.dispatchUpdatesTo(this)
                     }
@@ -64,9 +53,7 @@ class LogAdapter internal constructor(private val subject: BehaviorSubject<List<
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): RecyclerView.ViewHolder {
         val v = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_default,
-                        parent,
-                        false)
+                .inflate(R.layout.item_default, parent, false)
         return ViewHolder(v)
     }
 
@@ -76,6 +63,10 @@ class LogAdapter internal constructor(private val subject: BehaviorSubject<List<
                                   position: Int) {
         val message = messageList[position]
         (holder as ViewHolder).bindView(message)
+    }
+
+    private companion object {
+        private const val SAMPLE_DURATION_MS = 400L
     }
 
     private class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
