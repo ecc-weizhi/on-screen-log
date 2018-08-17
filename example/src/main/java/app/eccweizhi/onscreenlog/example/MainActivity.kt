@@ -3,61 +3,67 @@ package app.eccweizhi.onscreenlog.example
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(),
         View.OnClickListener {
+
+    private var subscription: Disposable? = null
+    private val randomLogGenerator = RandomLogGenerator(MyApplication.INSTANCE.onScreenLog)
+    private var adapterObserver: RecyclerView.AdapterDataObserver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        buttonV.setOnClickListener(this)
-        buttonD.setOnClickListener(this)
-        buttonI.setOnClickListener(this)
-        buttonW.setOnClickListener(this)
-        buttonE.setOnClickListener(this)
-        buttonWtf.setOnClickListener(this)
+        startLogButton.setOnClickListener(this)
+        stopLogButton.setOnClickListener(this)
 
-        val llm = LinearLayoutManager(this)
-        onScreenLogRecyclerView.layoutManager = llm
+        // Just need to set RecyclerView adapter to on-screen-log adapter.
         onScreenLogRecyclerView.adapter = MyApplication.INSTANCE.onScreenLog.adapter
+
+        setupRecyclerView()
+    }
+
+    override fun onDestroy() {
+        adapterObserver?.let { onScreenLogRecyclerView.adapter.unregisterAdapterDataObserver(it) }
+        adapterObserver = null
+        subscription?.dispose()
+        subscription = null
+        super.onDestroy()
     }
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.buttonV -> {
-                MyApplication.INSTANCE.onScreenLog.v(javaClass.simpleName,
-                        "This is a verbose message %s",
-                        UUID.randomUUID().toString())
+            R.id.startLogButton -> {
+                subscription ?: run {
+                    subscription = Observable.interval(100, TimeUnit.MILLISECONDS)
+                            .subscribe { randomLogGenerator.logRandomMessage() }
+                }
             }
-            R.id.buttonD -> {
-                MyApplication.INSTANCE.onScreenLog.d(javaClass.simpleName,
-                        "This is a debug message %s",
-                        UUID.randomUUID().toString())
-            }
-            R.id.buttonI -> {
-                MyApplication.INSTANCE.onScreenLog.i(javaClass.simpleName,
-                        "This is a info message %s",
-                        UUID.randomUUID().toString())
-            }
-            R.id.buttonW -> {
-                MyApplication.INSTANCE.onScreenLog.w(javaClass.simpleName,
-                        "This is a warn message %s",
-                        UUID.randomUUID().toString())
-            }
-            R.id.buttonE -> {
-                MyApplication.INSTANCE.onScreenLog.e(javaClass.simpleName,
-                        "This is a error message %s",
-                        UUID.randomUUID().toString())
-            }
-            R.id.buttonWtf -> {
-                MyApplication.INSTANCE.onScreenLog.wtf(javaClass.simpleName,
-                        "This is a wtf message %s",
-                        UUID.randomUUID().toString())
+            R.id.stopLogButton -> {
+                subscription?.dispose()
+                subscription = null
             }
         }
+    }
+
+    /**
+     * Fanciful stuff to autoscroll RecyclerView. This is not necessary to use on-screen-log.
+     */
+    private fun setupRecyclerView() {
+        val llm = LinearLayoutManager(this)
+        onScreenLogRecyclerView.layoutManager = llm
+        adapterObserver = object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                onScreenLogRecyclerView.smoothScrollToPosition(positionStart + itemCount)
+            }
+        }
+        adapterObserver?.let { onScreenLogRecyclerView.adapter.registerAdapterDataObserver(it) }
     }
 }
