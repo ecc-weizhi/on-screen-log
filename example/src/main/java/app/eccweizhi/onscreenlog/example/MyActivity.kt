@@ -7,10 +7,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_my.*
 import java.util.concurrent.TimeUnit
 
-class MainActivity : AppCompatActivity(),
+class MyActivity : AppCompatActivity(),
         View.OnClickListener {
 
     private var subscription: Disposable? = null
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_my)
 
         startLogButton.setOnClickListener(this)
         stopLogButton.setOnClickListener(this)
