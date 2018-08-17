@@ -250,7 +250,7 @@ class OnScreenLog private constructor(private val applicationContext: Context,
             list.pollFirst()
         }
 
-        val clone = list.clone() as List<Message>
+        val clone = ArrayList(list)
         subject.onNext(clone)
 
         if (outputToLogcat) {
