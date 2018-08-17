@@ -1,1 +1,12 @@
-<manifest package="app.eccweizhi.onscreenlog" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="app.eccweizhi.onscreenlog">
+
+    <application>
+        <activity
+            android:name=".LogActivity"
+            android:label="on-screen-log"
+            android:taskAffinity="app.eccweizhi.onscreenlog"
+            android:theme="@style/AppTheme" />
+    </application>
+
+</manifest>
