@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Base.V21.AppTheme" />
+
+    <style name="Base.V21.AppTheme" parent="Base.V19.AppTheme">
+        <!-- API 21 specific attributes -->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/indigo_700</item>
+    </style>
+</resources>
