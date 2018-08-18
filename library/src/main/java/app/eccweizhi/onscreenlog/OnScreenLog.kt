@@ -258,7 +258,7 @@ class OnScreenLog private constructor(private val applicationContext: Context,
 
     class Builder internal constructor() {
         private var context: Context? = null
-        private var capacity: Int = 100
+        private var capacity: Int = 500
         private var outputToLogcat: Boolean = true
         private var notificationId: Int? = null
 

@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar
 class LogActivity : AppCompatActivity() {
     private lateinit var logRecyclerView: RecyclerView
     private var adapterObserver: RecyclerView.AdapterDataObserver? = null
+    private var shouldAutoScroll = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +37,23 @@ class LogActivity : AppCompatActivity() {
         logRecyclerView.layoutManager = llm
         adapterObserver = object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                logRecyclerView.smoothScrollToPosition(positionStart + itemCount)
+                if (shouldAutoScroll) {
+                    logRecyclerView.smoothScrollToPosition(positionStart + itemCount)
+                }
             }
         }
         adapterObserver?.let { logRecyclerView.adapter.registerAdapterDataObserver(it) }
+        logRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                val lastVisiblePosition = llm.findLastVisibleItemPosition()
+                val itemCount = recyclerView.adapter.itemCount
+
+                shouldAutoScroll = if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    lastVisiblePosition >= (itemCount - 1)
+                } else {
+                    false
+                }
+            }
+        })
     }
 }
