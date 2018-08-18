@@ -12,6 +12,7 @@ class MyApplication : Application() {
         super.onCreate()
         onScreenLog = OnScreenLog.builder()
                 .context(this)
+                .notificationId(1)
                 .build()
         INSTANCE = this
     }
