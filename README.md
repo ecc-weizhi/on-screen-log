@@ -67,7 +67,7 @@ recyclerView.setAdapter(onScreenLog.getAdapter());
 #### Notification
 `OnScreenLog` will display logs as notification automagically. Just tap on the notification to view logs.
 
-#### Timber support (only for `onscreenlog-timber`)
+#### Timber support (see [Installing Timber module](#timber-module))
 Create an `OnScreenLoggingTree` and plant it.
 ```
 OnScreenLog onScreenLog;
